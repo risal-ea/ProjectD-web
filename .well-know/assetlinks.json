@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.risal.project_d",
+      "sha256_cert_fingerprints": [
+        "2A:AE:B9:A0:76:4E:66:A2:B4:B1:D0:66:EB:1F:AE:06:50:B4:9A:25:93:F4:72:EB:F3:31:9E:21:D4:AB:13:39",
+        "B6:D3:BF:FE:96:41:EF:07:CE:F5:61:D5:39:9B:77:6F:73:EA:28:A1:92:C5:87:15:8E:CD:F9:BA:4F:0F:C3:09"
+      ]
+    }
+  }
+]
