@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>CooWik</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Prevent social apps breaking preview -->
-  <meta property="og:title" content="CooWik Profile" />
-  <meta property="og:description" content="Open profile on CooWik" />
-  <meta property="og:type" content="website" />
+<meta charset="utf-8" />
+<title>CooWik</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Prevent social apps breaking preview -->
+<meta property="og:title" content="CooWik Profile" />
+<meta property="og:description" content="Open profile on CooWik" />
+<meta property="og:type" content="website" />
 </head>
 <body>
-  <p>Redirecting…</p>
+<p>Opening CooWik...</p>
+<script>
+const ua = navigator.userAgent || navigator.vendor || window.opera;
+const isAndroid = /android/i.test(ua);
+const isIOS = /iPad|iPhone|iPod/.test(ua);
 
-  <script>
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
+// Get the full path (e.g., /user/abc123/profile)
+const path = window.location.pathname;
 
-    const isAndroid = /android/i.test(ua);
-    const isIOS = /iPad|iPhone|iPod/.test(ua);
-
-    if (isAndroid) {
-      // App not installed → Play Store
-      setTimeout(() => {
-        window.location.href =
-          "https://play.google.com/store/apps/details?id=com.risal.project_d";
-      }, 500);
-    } else if (isIOS) {
-      // iOS users → website
-      window.location.href = "https://coowik.com";
-    } else {
-      // Desktop / others
-      window.location.href = "https://coowik.com";
-    }
-  </script>
+if (isAndroid) {
+  // Try to open the app first with the deep link
+  const deepLink = `coowik://${window.location.host}${path}`;
+  window.location.href = deepLink;
+  
+  // If app is not installed, redirect to Play Store after a delay
+  setTimeout(() => {
+    window.location.href = "https://play.google.com/store/apps/details?id=com.risal.project_d";
+  }, 2000);
+  
+} else if (isIOS) {
+  // Try universal link first
+  const universalLink = `coowik://${window.location.host}${path}`;
+  window.location.href = universalLink;
+  
+  // Fallback to website
+  setTimeout(() => {
+    window.location.href = "https://coowik.com";
+  }, 2000);
+  
+} else {
+  // Desktop / others → website
+  window.location.href = "https://coowik.com";
+}
+</script>
 </body>
 </html>
