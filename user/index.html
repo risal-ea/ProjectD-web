@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Open App</title>
+
+  <!-- Android App Link -->
+  <meta http-equiv="refresh" content="0; url=intent://user/USER_ID/profile#Intent;scheme=https;package=com.risal.project_d;end">
+
+  <script>
+    const userId = window.location.pathname.split('/')[2];
+
+    // Try to open app
+    window.location.href =
+      "intent://user/" + userId + "/profile#Intent;scheme=https;package=com.risal.project_d;end";
+
+    // Fallback to Play Store
+    setTimeout(() => {
+      window.location.href =
+        "https://play.google.com/store/apps/details?id=com.risal.project_d";
+    }, 1500);
+  </script>
+</head>
+<body>
+  <p>Opening app...</p>
+</body>
+</html>
