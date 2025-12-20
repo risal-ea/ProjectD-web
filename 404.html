@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CooWik Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="CooWik Profile" />
+<meta property="og:description" content="Open profile on CooWik" />
+<meta property="og:type" content="website" />
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #000;
+    color: #fff;
+  }
+  .container {
+    text-align: center;
+  }
+  .spinner {
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top: 3px solid #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="spinner"></div>
+  <p>Opening CooWik...</p>
+  <p id="debug" style="font-size: 12px; color: #666; margin-top: 20px;"></p>
+</div>
+<script>
+const debug = document.getElementById('debug');
+function log(msg) {
+  console.log(msg);
+  debug.innerHTML += msg + '<br>';
+}
+
+const ua = navigator.userAgent || navigator.vendor || window.opera;
+const isAndroid = /android/i.test(ua);
+const isIOS = /iPad|iPhone|iPod/.test(ua);
+
+// Get the full path (e.g., /user/abc123/profile)
+const path = window.location.pathname;
+
+log("Path: " + path);
+log("Android: " + isAndroid);
+log("iOS: " + isIOS);
+
+// Check if this is a user profile path
+const match = path.match(/\/user\/([^\/]+)\/profile/);
+if (!match) {
+  log("Not a profile link, redirecting to home...");
+  setTimeout(() => {
+    window.location.href = "https://coowik.com";
+  }, 2000);
+} else {
+  const uid = match[1];
+  log("UID: " + uid);
+
+  if (isAndroid) {
+    // Try custom scheme first (works better on Android)
+    const deepLink = `coowik://coowik.com${path}`;
+    log("Attempting deep link: " + deepLink);
+    
+    // Try to open the app
+    window.location.href = deepLink;
+    
+    // If app is not installed, redirect to Play Store after delay
+    setTimeout(() => {
+      log("App not detected, redirecting to Play Store...");
+      window.location.href = "https://play.google.com/store/apps/details?id=com.risal.project_d";
+    }, 2500);
+    
+  } else if (isIOS) {
+    // For iOS, try custom scheme
+    const deepLink = `coowik://coowik.com${path}`;
+    log("Attempting deep link: " + deepLink);
+    
+    window.location.href = deepLink;
+    
+    // Fallback to App Store or website
+    setTimeout(() => {
+      log("App not detected, redirecting to website...");
+      window.location.href = "https://coowik.com"; // Replace with App Store link when available
+    }, 2500);
+    
+  } else {
+    // Desktop / others → website
+    log("Desktop detected, redirecting to website...");
+    setTimeout(() => {
+      window.location.href = "https://coowik.com";
+    }, 1500);
+  }
+}
+</script>
+</body>
+</html>
